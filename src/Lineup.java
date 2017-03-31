@@ -5,6 +5,7 @@
 public class Lineup
 {
     public int PlayerId ;
+    public String RosterName;
 
     public int getPlayerId() {
         return PlayerId;
@@ -21,7 +22,5 @@ public class Lineup
     public void setRosterName(String rosterName) {
         RosterName = rosterName;
     }
-
-    public String RosterName;
 }
 

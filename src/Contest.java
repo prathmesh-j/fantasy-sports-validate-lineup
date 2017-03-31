@@ -47,6 +47,10 @@ public class Contest
 
 class RosterPosition
 {
+
+    public String Name ;
+    public int Count;
+
     public String getName() {
         return Name;
     }
@@ -62,14 +66,16 @@ class RosterPosition
     public void setCount(int count) {
         Count = count;
     }
-
-    public String Name ;
-    public int Count;
 }
 
 class Game
 {
     public int GameId ;
+    public String AwayTeam;
+    public int AwayTeamId;
+    public String HomeTeam;
+    public int HomeTeamId;
+    public Date GameTime;
 
     public int getGameId() {
         return GameId;
@@ -118,15 +124,4 @@ class Game
     public void setGameTime(Date gameTime) {
         GameTime = gameTime;
     }
-
-    public String AwayTeam;
-
-    public int AwayTeamId;
-
-    public String HomeTeam;
-
-    public int HomeTeamId;
-
-    public Date GameTime;
-
 }
