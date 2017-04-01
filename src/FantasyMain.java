@@ -7,9 +7,9 @@ import java.util.HashSet;
 
 public class FantasyMain {
 
-    public static void main(String[] args) {
-
-    }
+    // CONSTANTS
+    private final int MAX_PLAYERS_IN_A_GAME = 3;
+    private final int GAMES_A_LINEUP_MUST_ENCOMPASS = 2;
 
     //1. All roster positions listed in the contest must be filled by the lineup
     //2. The lineup must encompass at least two games
@@ -64,8 +64,8 @@ public class FantasyMain {
         }
 
         for (Game g: contest.Games) {
-            if(validGames > 2){
-                return false;   // --->  2. The lineup must encompass at least two games
+            if(validGames > GAMES_A_LINEUP_MUST_ENCOMPASS){
+                return false;
             }
             for (Player p :playersInLineup.values()) {
                 if(g.AwayTeam == p.teamId){
@@ -89,7 +89,7 @@ public class FantasyMain {
         int awayCount = 0;
         for (Game g : contest.Games) {
             for (Player p: players) {
-                if(homeCount > 3 || awayCount > 3) {
+                if(homeCount > MAX_PLAYERS_IN_A_GAME || awayCount > MAX_PLAYERS_IN_A_GAME) {
                     return false;
                 }
                 if(g.AwayTeam == p.teamId){
