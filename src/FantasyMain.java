@@ -17,7 +17,6 @@ public class FantasyMain {
     //4. The sum of player salary can not exceed the contests max salary cap
     //5. The lineup can not contain more than the required amount of players
     //6. Any single player can only be used once
-
     public boolean ValidateLine(Contest contest, ArrayList<Player> players, ArrayList<Lineup> lineup) {
 
         boolean validation1 = isContestFilledByLineup(contest, lineup);
@@ -98,16 +97,22 @@ public class FantasyMain {
     //3. There can not be more than 3 players on a single team per game
     public boolean checkPlayersOnATeamPerGame(Contest contest, ArrayList<Player> players) {
         int count = 0;
+        int homeCount = 0;
+        int awayCount = 0;
         for (Game g : contest.Games) {
             for (Player p: players) {
-                if(count == 3) {
+                if(homeCount > 3 || awayCount > 3) {
                     return false;
                 }
-                if(p.teamId == g.AwayTeam || p.teamId == g.AwayTeam) {
-                    count++;
+                if(g.AwayTeam == p.teamId){
+                    homeCount++;
+                }
+                if(g.HomeTeam == p.teamId){
+                    awayCount++;
                 }
             }
-            count = 0;
+            homeCount = 0;
+            awayCount = 0;
         }
         return true;
     }
