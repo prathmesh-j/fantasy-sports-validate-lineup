@@ -79,8 +79,6 @@ public class FantasyMain {
 
     //1. All roster positions listed in the contest must be filled by the lineup
     public boolean isContestFilledByLineup(Contest contest, ArrayList<Lineup> lineup){
-        //Lineup contains PlayerId and RosterName
-        //RosterPosition contains Name and count
         HashSet<String> rosterNames  = new HashSet<>();
         for (RosterPosition rp : contest.RosterPositions) {
             rosterNames.add(rp.Name);
@@ -96,7 +94,6 @@ public class FantasyMain {
 
     //3. There can not be more than 3 players on a single team per game
     public boolean checkPlayersOnATeamPerGame(Contest contest, ArrayList<Player> players) {
-        int count = 0;
         int homeCount = 0;
         int awayCount = 0;
         for (Game g : contest.Games) {
