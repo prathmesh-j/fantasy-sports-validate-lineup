@@ -6,9 +6,9 @@ public class Player
 {
     public String firstName ;
     public String lastName ;
-    public String playerId ;
+    public int playerId ;
     public String salary ;
-    public String teamId ;
+    public int teamId ;
 
     public String getFirstName() {
         return firstName;
@@ -26,11 +26,11 @@ public class Player
         this.lastName = lastName;
     }
 
-    public String getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(String playerId) {
+    public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
 
@@ -42,11 +42,11 @@ public class Player
         this.salary = salary;
     }
 
-    public String getTeamId() {
+    public int getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(String teamId) {
+    public void setTeamId(int teamId) {
         this.teamId = teamId;
     }
 }

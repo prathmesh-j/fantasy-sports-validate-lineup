@@ -19,39 +19,64 @@ public class FantasyMain {
     //6. Any single player can only be used once
 
     public boolean ValidateLine(Contest contest, ArrayList<Player> players, ArrayList<Lineup> lineup) {
-        HashMap<String, Player> playerMap = new HashMap<>();
+        HashMap<Integer, Player> playerMap = new HashMap<>();
         for (Player p : players) {
             playerMap.put(p.playerId, p);
         }
 
         boolean validation1 = isContestFilledByLineup(contest, lineup);
+        if (!validation1) {
+            return false;
+        }
         boolean validation2 = doesLineupCoverTwoGames(contest,playerMap,lineup);
+        if (!validation2) {
+            return false;
+        }
         boolean validation3 = checkPlayersOnATeamPerGame(contest, players);
+        if (!validation3) {
+            return false;
+        }
         boolean validation4 = isPlayersSalaryGreaterThanMaxCap(contest, lineup, playerMap);
+        if (!validation4) {
+            return false;
+        }
         boolean validation5 = maxPlayerCountValidation(contest, lineup);
+        if (!validation5) {
+            return false;
+        }
         boolean validation6 = isPLayerUsedOnlyOnce(lineup, playerMap);
+        if (!validation6){
+            return false;
+        }
 
-        return validation1 && validation2 && validation3 && validation4 && validation5 && validation6;
+        return true;
     }
 
 
     //1. All roster positions listed in the contest must be filled by the lineup
     private boolean isContestFilledByLineup(Contest contest, ArrayList<Lineup> lineup){
-        HashSet<String> rosterNames  = new HashSet<>();
+        HashMap<String, Integer> rosterPositionMap  = new HashMap<>();
         for (RosterPosition rp : contest.RosterPositions) {
-            rosterNames.add(rp.Name);
+            rosterPositionMap.put(rp.Name, rp.Count);
         }
 
         for (Lineup l : lineup) {
-            if(!rosterNames.contains(l.RosterName)){
+            if(!rosterPositionMap.containsKey(l.RosterName)){
                 return false;
+            } else {
+                int rosterCount = rosterPositionMap.get(l.RosterName);
+                if (rosterCount == 1) {
+                    rosterPositionMap.remove(l.RosterName);
+                } else {
+                    rosterPositionMap.put(l.RosterName, rosterPositionMap.get(l.RosterName) - rosterCount);
+                }
             }
         }
-        return true;
+        return rosterPositionMap.isEmpty();
     }
 
     //2. The lineup must encompass at least two games
-    private boolean doesLineupCoverTwoGames(Contest contest, HashMap<String, Player> playerMap, ArrayList<Lineup> lineup) {
+    private boolean doesLineupCoverTwoGames(Contest contest, HashMap<Integer, Player> playerMap, ArrayList<Lineup> lineup) {
         HashMap<Integer, Player> playersInLineup = new HashMap<>();
         int validGames = 0;
         boolean isHome = false;
@@ -79,44 +104,33 @@ public class FantasyMain {
                 validGames++;
             }
         }
-
         return true;
     }
 
     //3. There can not be more than 3 players on a single team per game
     private boolean checkPlayersOnATeamPerGame(Contest contest, ArrayList<Player> players) {
-        int homeCount = 0;
-        int awayCount = 0;
-        for (Game g : contest.Games) {
-            for (Player p: players) {
-                if(homeCount > MAX_PLAYERS_IN_A_GAME || awayCount > MAX_PLAYERS_IN_A_GAME) {
+        HashMap<Integer, Integer> teamMap = new HashMap<>();
+        for (Player p : players) {
+            if(teamMap.containsKey(p.teamId)) {
+                if (teamMap.get(p.teamId) > MAX_PLAYERS_IN_A_GAME) {
                     return false;
                 }
-                if(g.AwayTeam == p.teamId){
-                    homeCount++;
-                }
-                if(g.HomeTeam == p.teamId){
-                    awayCount++;
-                }
+                teamMap.put(p.teamId, teamMap.get(p.teamId) + 1);
+            } else {
+                teamMap.put(p.teamId, 1);
             }
-            homeCount = 0;
-            awayCount = 0;
         }
         return true;
     }
 
     //4. The sum of player salary can not exceed the contests max salary cap
-    private boolean isPlayersSalaryGreaterThanMaxCap(Contest contest, ArrayList<Lineup> lineup, HashMap<String, Player> playerMap) {
-        int maxSalary = 0;
+    private boolean isPlayersSalaryGreaterThanMaxCap(Contest contest, ArrayList<Lineup> lineup, HashMap<Integer, Player> playerMap) {
+        int totalLineupSalary = 0;
         for (Lineup l: lineup) {
             Player p = playerMap.get(l.PlayerId);
-            maxSalary = maxSalary + Integer.parseInt(p.salary);
+            totalLineupSalary = totalLineupSalary + Integer.parseInt(p.salary);
         }
-
-        if(maxSalary > contest.SalaryCap) {
-            return false;
-        }
-        return true;
+        return totalLineupSalary > contest.SalaryCap;
     }
 
     //5. The lineup can not contain more than the required amount of players
@@ -130,7 +144,7 @@ public class FantasyMain {
     }
 
     //6. Any single player can only be used once
-    private boolean isPLayerUsedOnlyOnce(ArrayList<Lineup> lineup, HashMap<String, Player> playerMap) {
+    private boolean isPLayerUsedOnlyOnce(ArrayList<Lineup> lineup, HashMap<Integer, Player> playerMap) {
         HashMap<Integer, Player> playersInLineup = new HashMap<>();
         for (Lineup l: lineup) {
             if(playersInLineup.containsKey(l.PlayerId)) {
@@ -141,5 +155,4 @@ public class FantasyMain {
         }
         return true;
     }
-
 }

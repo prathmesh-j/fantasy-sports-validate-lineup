@@ -71,9 +71,9 @@ class RosterPosition
 class Game
 {
     public int GameId ;
-    public String AwayTeam;
+    public int AwayTeam;
     public int AwayTeamId;
-    public String HomeTeam;
+    public int HomeTeam;
     public int HomeTeamId;
     public Date GameTime;
 
@@ -85,11 +85,11 @@ class Game
         GameId = gameId;
     }
 
-    public String getAwayTeam() {
+    public int getAwayTeam() {
         return AwayTeam;
     }
 
-    public void setAwayTeam(String awayTeam) {
+    public void setAwayTeam(int awayTeam) {
         AwayTeam = awayTeam;
     }
 
@@ -101,11 +101,11 @@ class Game
         AwayTeamId = awayTeamId;
     }
 
-    public String getHomeTeam() {
+    public int getHomeTeam() {
         return HomeTeam;
     }
 
-    public void setHomeTeam(String homeTeam) {
+    public void setHomeTeam(int homeTeam) {
         HomeTeam = homeTeam;
     }
 
